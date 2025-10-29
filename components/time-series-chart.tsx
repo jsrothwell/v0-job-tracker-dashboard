@@ -28,12 +28,12 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
 
     jobs.forEach((job) => {
       try {
-        const date = new Date(job.created_at)
-        if (isNaN(date.getTime())) {
+        const jobDate = new Date(job.created_at)
+        if (isNaN(jobDate.getTime())) {
           console.warn("[v0] Invalid date:", job.created_at)
           return
         }
-        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+        const monthKey = `${jobDate.getFullYear()}-${String(jobDate.getMonth() + 1).padStart(2, "0")}`
         monthlyData.set(monthKey, (monthlyData.get(monthKey) || 0) + 1)
       } catch (error) {
         console.error("[v0] Error parsing date:", job.created_at, error)
@@ -44,25 +44,18 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([month, count]) => {
         const [year, monthNum] = month.split("-")
-        const date = new Date(Number.parseInt(year), Number.parseInt(monthNum) - 1)
+        const dateObj = new Date(Number.parseInt(year), Number.parseInt(monthNum) - 1)
         return {
-          month: date.toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+          month: dateObj.toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+          year: Number.parseInt(year),
+          monthNum: Number.parseInt(monthNum) - 1,
           applications: count,
         }
       })
 
     if (sortedData.length > 0) {
       const result = []
-      // Store the numeric values
-return {
-  month: date.toLocaleDateString("en-US", { month: "short", year: "numeric" }),
-  year: Number.parseInt(year),        // ✅ Added
-  monthNum: Number.parseInt(monthNum) - 1,  // ✅ Added
-  applications: count,
-}
-
-// Use numeric values instead of parsing formatted string
-const startDate = new Date(sortedData[0].year, sortedData[0].monthNum) // ✅ Fixed!
+      const startDate = new Date(sortedData[0].year, sortedData[0].monthNum)
       const endDate = new Date()
 
       for (let d = new Date(startDate); d <= endDate; d.setMonth(d.getMonth() + 1)) {
