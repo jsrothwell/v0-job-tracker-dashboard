@@ -40,10 +40,10 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
           aria-labelledby="funnel-heading"
         >
           <div className="mb-6 space-y-1">
-            <h3 id="funnel-heading" className="text-xl font-semibold text-white">
+            <h3 id="funnel-heading" className="text-xl font-semibold text-foreground">
               Application Funnel
             </h3>
-            <p className="text-sm text-white/70">Track conversion rates across each stage</p>
+            <p className="text-sm text-foreground/70">Track conversion rates across each stage</p>
           </div>
           <ApplicationFunnelChart jobs={jobs} />
         </article>
@@ -53,10 +53,10 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
           aria-labelledby="timeline-heading"
         >
           <div className="mb-6 space-y-1">
-            <h3 id="timeline-heading" className="text-xl font-semibold text-white">
+            <h3 id="timeline-heading" className="text-xl font-semibold text-foreground">
               Application Timeline
             </h3>
-            <p className="text-sm text-white/70">Monitor your application activity over time</p>
+            <p className="text-sm text-foreground/70">Monitor your application activity over time</p>
           </div>
           <TimeSeriesChart jobs={jobs} />
         </article>
