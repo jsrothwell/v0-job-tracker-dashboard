@@ -87,7 +87,7 @@ export function KeyMetrics({ jobs }: KeyMetricsProps) {
               <div className="flex items-start justify-between">
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-foreground/90">{metric.label}</h3>
-                  <p className="text-4xl font-bold tracking-tight text-white">
+                  <p className="text-4xl font-bold tracking-tight text-foreground">
                     <span className={metric.color}>{metric.value}</span>
                   </p>
                 </div>
