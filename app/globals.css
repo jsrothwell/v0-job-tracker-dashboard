@@ -3,69 +3,62 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Light theme with blue-green accent colors */
 :root {
-  --background: oklch(0.98 0.01 160);
-  --foreground: oklch(0.18 0.02 165);
-  --card: oklch(0.99 0.005 160);
-  --card-foreground: oklch(0.18 0.02 165);
-  --popover: oklch(0.99 0.005 160);
-  --popover-foreground: oklch(0.18 0.02 165);
-  --primary: oklch(0.45 0.08 165);
-  --primary-foreground: oklch(0.98 0.01 160);
-  --secondary: oklch(0.92 0.015 165);
-  --secondary-foreground: oklch(0.25 0.03 165);
-  --muted: oklch(0.94 0.01 165);
-  --muted-foreground: oklch(0.52 0.02 165);
-  --accent: oklch(0.55 0.09 180);
-  --accent-foreground: oklch(0.98 0.01 160);
+  --background: oklch(0.98 0.005 200);
+  --foreground: oklch(0.2 0.02 200);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.02 200);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.02 200);
+  --primary: oklch(0.5 0.12 190);
+  --primary-foreground: oklch(0.99 0.005 200);
+  --secondary: oklch(0.94 0.01 200);
+  --secondary-foreground: oklch(0.25 0.03 200);
+  --muted: oklch(0.96 0.008 200);
+  --muted-foreground: oklch(0.48 0.02 200);
+  --accent: oklch(0.55 0.14 185);
+  --accent-foreground: oklch(0.99 0.005 200);
   --destructive: oklch(0.55 0.18 25);
-  --destructive-foreground: oklch(0.98 0.01 160);
-  --border: oklch(0.88 0.015 165);
-  --input: oklch(0.88 0.015 165);
-  --ring: oklch(0.55 0.09 165);
-  --chart-1: oklch(0.52 0.11 165);
-  --chart-2: oklch(0.58 0.1 180);
-  --chart-3: oklch(0.48 0.09 155);
-  --chart-4: oklch(0.62 0.12 175);
-  --chart-5: oklch(0.55 0.08 150);
+  --destructive-foreground: oklch(0.99 0.005 200);
+  --border: oklch(0.9 0.01 200);
+  --input: oklch(0.92 0.01 200);
+  --ring: oklch(0.55 0.14 185);
+  --chart-1: oklch(0.5 0.12 190);
+  --chart-2: oklch(0.55 0.14 185);
+  --chart-3: oklch(0.48 0.11 180);
+  --chart-4: oklch(0.52 0.13 195);
+  --chart-5: oklch(0.45 0.1 175);
   --radius: 0.625rem;
-  --sidebar: oklch(0.97 0.01 160);
-  --sidebar-foreground: oklch(0.22 0.02 165);
-  --sidebar-primary: oklch(0.45 0.08 165);
-  --sidebar-primary-foreground: oklch(0.98 0.01 160);
-  --sidebar-accent: oklch(0.92 0.015 165);
-  --sidebar-accent-foreground: oklch(0.25 0.03 165);
-  --sidebar-border: oklch(0.88 0.015 165);
-  --sidebar-ring: oklch(0.55 0.09 165);
+  --sidebar: oklch(0.99 0.005 200);
+  --sidebar-foreground: oklch(0.22 0.02 200);
+  --sidebar-primary: oklch(0.5 0.12 190);
+  --sidebar-primary-foreground: oklch(0.99 0.005 200);
+  --sidebar-accent: oklch(0.94 0.01 200);
+  --sidebar-accent-foreground: oklch(0.25 0.03 200);
+  --sidebar-border: oklch(0.9 0.01 200);
+  --sidebar-ring: oklch(0.55 0.14 185);
 }
 
-/* Updated dark theme with WCAG AA compliant colors for better accessibility */
 .dark {
   --background: oklch(0.08 0.012 240);
-  /* Pure white for maximum contrast on dark backgrounds */
   --foreground: oklch(1 0 0);
   --card: oklch(0.12 0.015 240);
-  /* Card text pure white for readability */
   --card-foreground: oklch(1 0 0);
   --popover: oklch(0.11 0.015 240);
   --popover-foreground: oklch(1 0 0);
-  /* Vibrant electric blue accent for interactive elements */
   --primary: oklch(0.65 0.2 240);
   --primary-foreground: oklch(0.08 0.012 240);
   --secondary: oklch(0.18 0.02 240);
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.16 0.018 240);
-  /* Very light gray for secondary text - highly visible */
   --muted-foreground: oklch(0.85 0.005 240);
-  /* Brighter accent color for interactive elements */
   --accent: oklch(0.7 0.25 220);
   --accent-foreground: oklch(0.08 0.012 240);
   --destructive: oklch(0.55 0.2 25);
   --destructive-foreground: oklch(1 0 0);
-  /* Lighter border for better card definition */
   --border: oklch(0.25 0.02 240);
   --input: oklch(0.2 0.02 240);
-  /* Bright ring color for focus states */
   --ring: oklch(0.7 0.25 220);
   --chart-1: oklch(0.7 0.25 220);
   --chart-2: oklch(0.65 0.22 200);
@@ -127,7 +120,6 @@
 
 @layer base {
   * {
-    /* Enhanced focus outline for keyboard navigation */
     @apply border-border outline-ring/50 outline-offset-2;
   }
   body {
@@ -135,22 +127,59 @@
   }
 }
 
-/* Updated glassmorphism with better borders for card definition */
+/* Updated card styles for light theme */
 @layer utilities {
   .glass-card {
-    background: linear-gradient(135deg, oklch(0.14 0.018 240 / 0.8) 0%, oklch(0.12 0.015 240 / 0.6) 100%);
+    background: linear-gradient(135deg, oklch(1 0 0 / 0.95) 0%, oklch(0.99 0.005 200 / 0.9) 100%);
     backdrop-filter: blur(12px);
-    border: 1px solid oklch(0.28 0.025 240 / 0.4);
+    border: 1px solid oklch(0.88 0.015 200 / 0.5);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
   }
 
   .glass-card-light {
-    background: linear-gradient(135deg, oklch(0.16 0.02 240 / 0.5) 0%, oklch(0.14 0.018 240 / 0.3) 100%);
+    background: linear-gradient(135deg, oklch(1 0 0 / 0.98) 0%, oklch(0.99 0.005 200 / 0.95) 100%);
     backdrop-filter: blur(8px);
-    border: 1px solid oklch(0.25 0.022 240 / 0.3);
+    border: 1px solid oklch(0.9 0.01 200 / 0.4);
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
   }
 
-  /* Added focus-visible utility for enhanced keyboard navigation */
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  /* Celebration animation for offer cards */
+  @keyframes celebrate {
+    0%,
+    100% {
+      transform: scale(1) rotate(0deg);
+    }
+    25% {
+      transform: scale(1.05) rotate(-2deg);
+    }
+    50% {
+      transform: scale(1.1) rotate(2deg);
+    }
+    75% {
+      transform: scale(1.05) rotate(-1deg);
+    }
+  }
+
+  @keyframes confetti {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .celebrate {
+    animation: celebrate 0.6s ease-in-out;
+  }
+
+  .confetti {
+    animation: confetti 1s ease-out forwards;
   }
 }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
 
 type JobStatus = "Wishlist" | "Applied" | "Interviewing" | "Offer" | "Rejected"
 
@@ -21,6 +22,8 @@ interface AddJobDialogProps {
     expected_salary: string | null
     contact_name: string | null
     status: JobStatus
+    has_resume?: boolean
+    has_cover_letter?: boolean
   }) => void
 }
 
@@ -32,6 +35,8 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
     expected_salary: "",
     contact_name: "",
     status: "Wishlist" as JobStatus,
+    has_resume: false,
+    has_cover_letter: false,
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -49,6 +54,8 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
       expected_salary: "",
       contact_name: "",
       status: "Wishlist",
+      has_resume: false,
+      has_cover_letter: false,
     })
     onOpenChange(false)
   }
@@ -127,6 +134,35 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
                 <SelectItem value="Rejected">Rejected</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="space-y-3">
+            <Label>Documents</Label>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="has_resume"
+                checked={formData.has_resume}
+                onCheckedChange={(checked) => setFormData({ ...formData, has_resume: checked as boolean })}
+              />
+              <label
+                htmlFor="has_resume"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Resume uploaded
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="has_cover_letter"
+                checked={formData.has_cover_letter}
+                onCheckedChange={(checked) => setFormData({ ...formData, has_cover_letter: checked as boolean })}
+              />
+              <label
+                htmlFor="has_cover_letter"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Cover letter uploaded
+              </label>
+            </div>
           </div>
           <div className="flex justify-end gap-3">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

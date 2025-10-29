@@ -13,6 +13,7 @@ import {
 import { KanbanColumn } from "@/components/kanban-column"
 import { JobCard } from "@/components/job-card"
 import { AddJobDialog } from "@/components/add-job-dialog"
+import { CelebrationToast } from "@/components/celebration-toast"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
@@ -30,6 +31,8 @@ interface Job {
   status: JobStatus
   created_at: string
   updated_at: string
+  has_resume?: boolean
+  has_cover_letter?: boolean
 }
 
 interface KanbanBoardProps {
@@ -38,17 +41,19 @@ interface KanbanBoardProps {
 }
 
 const COLUMNS: { id: JobStatus; title: string; color: string }[] = [
-  { id: "Wishlist", title: "Wishlist", color: "bg-chart-3/10 border-chart-3/20" },
-  { id: "Applied", title: "Applied", color: "bg-chart-1/10 border-chart-1/20" },
-  { id: "Interviewing", title: "Interviewing", color: "bg-chart-4/10 border-chart-4/20" },
-  { id: "Offer", title: "Offer", color: "bg-chart-5/10 border-chart-5/20" },
-  { id: "Rejected", title: "Rejected", color: "bg-destructive/10 border-destructive/20" },
+  { id: "Wishlist", title: "Wishlist", color: "bg-chart-3/10 border-chart-3/30" },
+  { id: "Applied", title: "Applied", color: "bg-chart-1/10 border-chart-1/30" },
+  { id: "Interviewing", title: "Interviewing", color: "bg-chart-4/10 border-chart-4/30" },
+  { id: "Offer", title: "Offer", color: "bg-accent/10 border-accent/30" },
+  { id: "Rejected", title: "Rejected", color: "bg-destructive/10 border-destructive/30" },
 ]
 
 export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
   const [jobs, setJobs] = useState<Job[]>(initialJobs)
   const [activeJob, setActiveJob] = useState<Job | null>(null)
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+  const [showCelebration, setShowCelebration] = useState(false)
+  const [celebrationJobTitle, setCelebrationJobTitle] = useState("")
   const supabase = createClient()
 
   const sensors = useSensors(
@@ -76,15 +81,17 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
     const job = jobs.find((j) => j.id === jobId)
     if (!job || job.status === newStatus) return
 
-    // Optimistic update
+    if (newStatus === "Offer") {
+      setCelebrationJobTitle(job.job_title)
+      setShowCelebration(true)
+    }
+
     setJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, status: newStatus } : j)))
 
-    // Update in database
     const { error } = await supabase.from("jobs").update({ status: newStatus }).eq("id", jobId).eq("user_id", userId)
 
     if (error) {
       console.error("Failed to update job status:", error)
-      // Revert on error
       setJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, status: job.status } : j)))
     }
   }
@@ -125,8 +132,8 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold">Application Pipeline</h2>
-          <p className="text-foreground/70">Track your job applications across different stages</p>
+          <h2 className="text-3xl font-bold text-foreground">Application Pipeline</h2>
+          <p className="text-muted-foreground">Track your job applications across different stages</p>
         </div>
         <Button onClick={() => setIsAddDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
@@ -158,6 +165,12 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
       </DndContext>
 
       <AddJobDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} onAdd={handleAddJob} />
+
+      <CelebrationToast
+        show={showCelebration}
+        onComplete={() => setShowCelebration(false)}
+        jobTitle={celebrationJobTitle}
+      />
     </div>
   )
 }
