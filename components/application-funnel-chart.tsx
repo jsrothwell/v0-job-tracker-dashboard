@@ -67,10 +67,10 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
             <div key={stage.name} className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-white">{stage.name}</span>
+                  <span className="text-sm font-semibold text-foreground">{stage.name}</span>
                   {conversionRate && (
                     <span
-                      className="flex items-center gap-1 rounded-full bg-muted/50 px-2 py-0.5 text-xs font-medium text-white/90"
+                      className="flex items-center gap-1 rounded-full bg-muted/50 px-2 py-0.5 text-xs font-medium text-foreground/90"
                       aria-label={`${conversionRate} percent conversion from previous stage`}
                     >
                       <ArrowRight className="h-3 w-3" aria-hidden="true" />
@@ -82,7 +82,7 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
                   <span className={`text-lg font-bold ${stage.textColor}`} aria-label={`${stage.count} applications`}>
                     {stage.count}
                   </span>
-                  <span className="text-xs text-white/80">({percentage}%)</span>
+                  <span className="text-xs text-foreground/80">({percentage}%)</span>
                 </div>
               </div>
               <div
@@ -114,7 +114,7 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
           <div className="text-2xl font-bold text-chart-5" aria-label={`${statusCounts.Offer} offers received`}>
             {statusCounts.Offer}
           </div>
-          <div className="text-xs text-white/80">Offers</div>
+          <div className="text-xs text-foreground/80">Offers</div>
         </div>
         <div className="text-center">
           <div
@@ -123,7 +123,7 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
           >
             {statusCounts.Applied > 0 ? ((statusCounts.Offer / statusCounts.Applied) * 100).toFixed(1) : "0.0"}%
           </div>
-          <div className="text-xs text-white/80">Success Rate</div>
+          <div className="text-xs text-foreground/80">Success Rate</div>
         </div>
         <div className="text-center">
           <div
@@ -133,7 +133,7 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
             {statusCounts.Rejected}
             <TrendingDown className="h-4 w-4" aria-hidden="true" />
           </div>
-          <div className="text-xs text-white/80">Rejected</div>
+          <div className="text-xs text-foreground/80">Rejected</div>
         </div>
       </div>
     </div>
