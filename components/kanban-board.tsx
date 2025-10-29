@@ -97,6 +97,8 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
   }
 
   const handleAddJob = async (jobData: Omit<Job, "id" | "user_id" | "created_at" | "updated_at">) => {
+    console.log("[v0] Adding job with data:", jobData)
+
     const { data, error } = await supabase
       .from("jobs")
       .insert([{ ...jobData, user_id: userId }])
@@ -104,11 +106,13 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
       .single()
 
     if (error) {
-      console.error("Failed to add job:", error)
+      console.error("[v0] Failed to add job:", error)
+      alert(`Failed to add job: ${error.message}`)
       return
     }
 
     if (data) {
+      console.log("[v0] Job added successfully:", data)
       setJobs((prev) => [data, ...prev])
     }
   }
