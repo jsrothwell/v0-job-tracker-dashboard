@@ -38,6 +38,7 @@ interface Job {
 interface KanbanBoardProps {
   initialJobs: Job[]
   userId: string
+  onJobsChange?: () => void // Added callback to notify parent of changes
 }
 
 const COLUMNS: { id: JobStatus; title: string; color: string }[] = [
@@ -48,7 +49,7 @@ const COLUMNS: { id: JobStatus; title: string; color: string }[] = [
   { id: "Rejected", title: "Rejected", color: "bg-destructive/10 border-destructive/30" },
 ]
 
-export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
+export function KanbanBoard({ initialJobs, userId, onJobsChange }: KanbanBoardProps) {
   const [jobs, setJobs] = useState<Job[]>(initialJobs)
   const [activeJob, setActiveJob] = useState<Job | null>(null)
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
@@ -93,6 +94,8 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
     if (error) {
       console.error("Failed to update job status:", error)
       setJobs((prev) => prev.map((j) => (j.id === jobId ? { ...j, status: job.status } : j)))
+    } else {
+      onJobsChange?.()
     }
   }
 
@@ -114,6 +117,7 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
     if (data) {
       console.log("[v0] Job added successfully:", data)
       setJobs((prev) => [data, ...prev])
+      onJobsChange?.()
     }
   }
 
@@ -126,6 +130,7 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
     }
 
     setJobs((prev) => prev.filter((j) => j.id !== jobId))
+    onJobsChange?.()
   }
 
   const getJobsByStatus = (status: JobStatus) => {
