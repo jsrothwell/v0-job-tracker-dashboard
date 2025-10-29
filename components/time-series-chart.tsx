@@ -56,9 +56,13 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
 
   if (chartData.length === 0) {
     return (
-      <div className="flex h-[350px] flex-col items-center justify-center space-y-4">
-        <div className="relative h-32 w-full">
-          <svg className="h-full w-full opacity-20" viewBox="0 0 400 120">
+      <div
+        className="flex h-[350px] flex-col items-center justify-center space-y-4"
+        role="status"
+        aria-label="No timeline data available"
+      >
+        <div className="relative h-32 w-full" aria-hidden="true">
+          <svg className="h-full w-full opacity-30" viewBox="0 0 400 120">
             <path
               d="M 0 100 L 50 80 L 100 90 L 150 60 L 200 70 L 250 40 L 300 50 L 350 30 L 400 40"
               stroke="currentColor"
@@ -73,10 +77,10 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
           </svg>
         </div>
         <div className="flex items-center gap-2 text-center">
-          <Calendar className="h-4 w-4 text-muted-foreground" />
+          <Calendar className="h-4 w-4 text-foreground/60" aria-hidden="true" />
           <div>
-            <p className="text-sm font-medium text-muted-foreground">No timeline data yet</p>
-            <p className="text-xs text-muted-foreground/70">Start adding applications to track trends</p>
+            <p className="text-sm font-medium text-foreground/70">No timeline data yet</p>
+            <p className="text-xs text-muted-foreground">Start adding applications to track trends</p>
           </div>
         </div>
       </div>
@@ -88,26 +92,30 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
   const maxMonth = chartData.reduce((max, item) => (item.applications > max.applications ? item : max), chartData[0])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" role="region" aria-label="Application timeline chart">
       <ResponsiveContainer width="100%" height={250}>
-        <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+        <AreaChart
+          data={chartData}
+          margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+          aria-label="Monthly application trend"
+        >
           <defs>
             <linearGradient id="colorApplications" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="oklch(0.7 0.25 220)" stopOpacity={0.4} />
               <stop offset="95%" stopColor="oklch(0.7 0.25 220)" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.2 0.02 240)" opacity={0.5} />
-          <XAxis dataKey="month" stroke="oklch(0.6 0.01 240)" fontSize={11} tickLine={false} axisLine={false} />
-          <YAxis stroke="oklch(0.6 0.01 240)" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.25 0.02 240)" opacity={0.5} />
+          <XAxis dataKey="month" stroke="oklch(0.7 0.01 240)" fontSize={11} tickLine={false} axisLine={false} />
+          <YAxis stroke="oklch(0.7 0.01 240)" fontSize={11} tickLine={false} axisLine={false} allowDecimals={false} />
           <Tooltip
             contentStyle={{
               backgroundColor: "oklch(0.11 0.015 240)",
               border: "1px solid oklch(0.25 0.025 240)",
               borderRadius: "0.5rem",
-              color: "oklch(0.98 0.005 240)",
+              color: "oklch(0.98 0 0)",
             }}
-            labelStyle={{ color: "oklch(0.98 0.005 240)", fontWeight: 600 }}
+            labelStyle={{ color: "oklch(0.98 0 0)", fontWeight: 600 }}
           />
           <Area
             type="monotone"
@@ -120,17 +128,30 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
         </AreaChart>
       </ResponsiveContainer>
 
-      <div className="grid grid-cols-3 gap-4 rounded-lg border border-border/50 bg-muted/10 p-4">
+      <div
+        className="grid grid-cols-3 gap-4 rounded-lg border border-border/50 bg-muted/10 p-4"
+        role="region"
+        aria-label="Timeline summary statistics"
+      >
         <div className="text-center">
-          <div className="text-2xl font-bold text-foreground">{totalApplications}</div>
+          <div className="text-2xl font-bold text-foreground" aria-label={`${totalApplications} total applications`}>
+            {totalApplications}
+          </div>
           <div className="text-xs text-muted-foreground">Total</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-chart-1">{avgPerMonth}</div>
+          <div className="text-2xl font-bold text-chart-1" aria-label={`${avgPerMonth} average applications per month`}>
+            {avgPerMonth}
+          </div>
           <div className="text-xs text-muted-foreground">Avg/Month</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-chart-4">{chartData.length > 0 ? maxMonth.applications : 0}</div>
+          <div
+            className="text-2xl font-bold text-chart-4"
+            aria-label={`${chartData.length > 0 ? maxMonth.applications : 0} peak applications in a month`}
+          >
+            {chartData.length > 0 ? maxMonth.applications : 0}
+          </div>
           <div className="text-xs text-muted-foreground">Peak</div>
         </div>
       </div>

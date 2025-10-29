@@ -24,31 +24,43 @@ interface DataVisualizationPanelProps {
 
 export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
   return (
-    <div className="space-y-6">
+    <section className="space-y-6" aria-labelledby="analytics-heading">
       <KeyMetrics jobs={jobs} />
 
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h2>
+        <h2 id="analytics-heading" className="text-3xl font-bold tracking-tight text-foreground">
+          Analytics Dashboard
+        </h2>
         <p className="text-muted-foreground">Visualize your job search progress and conversion rates</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="glass-card rounded-xl p-6">
+        <article
+          className="glass-card rounded-xl p-6 focus-within:ring-2 focus-within:ring-ring"
+          aria-labelledby="funnel-heading"
+        >
           <div className="mb-6 space-y-1">
-            <h3 className="text-xl font-semibold">Application Funnel</h3>
+            <h3 id="funnel-heading" className="text-xl font-semibold text-foreground">
+              Application Funnel
+            </h3>
             <p className="text-sm text-muted-foreground">Track conversion rates across each stage</p>
           </div>
           <ApplicationFunnelChart jobs={jobs} />
-        </div>
+        </article>
 
-        <div className="glass-card rounded-xl p-6">
+        <article
+          className="glass-card rounded-xl p-6 focus-within:ring-2 focus-within:ring-ring"
+          aria-labelledby="timeline-heading"
+        >
           <div className="mb-6 space-y-1">
-            <h3 className="text-xl font-semibold">Application Timeline</h3>
+            <h3 id="timeline-heading" className="text-xl font-semibold text-foreground">
+              Application Timeline
+            </h3>
             <p className="text-sm text-muted-foreground">Monitor your application activity over time</p>
           </div>
           <TimeSeriesChart jobs={jobs} />
-        </div>
+        </article>
       </div>
-    </div>
+    </section>
   )
 }

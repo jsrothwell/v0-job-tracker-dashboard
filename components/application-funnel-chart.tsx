@@ -29,15 +29,19 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
 
   if (total === 0) {
     return (
-      <div className="flex h-[350px] flex-col items-center justify-center space-y-4">
-        <div className="relative h-32 w-full">
-          <div className="absolute left-1/2 top-0 h-24 w-48 -translate-x-1/2 rounded-t-full border-2 border-dashed border-muted-foreground/20 bg-muted/5" />
-          <div className="absolute left-1/2 top-8 h-20 w-40 -translate-x-1/2 rounded-t-full border-2 border-dashed border-muted-foreground/20 bg-muted/5" />
-          <div className="absolute left-1/2 top-16 h-16 w-32 -translate-x-1/2 rounded-t-full border-2 border-dashed border-muted-foreground/20 bg-muted/5" />
+      <div
+        className="flex h-[350px] flex-col items-center justify-center space-y-4"
+        role="status"
+        aria-label="No funnel data available"
+      >
+        <div className="relative h-32 w-full" aria-hidden="true">
+          <div className="absolute left-1/2 top-0 h-24 w-48 -translate-x-1/2 rounded-t-full border-2 border-dashed border-muted-foreground/30 bg-muted/10" />
+          <div className="absolute left-1/2 top-8 h-20 w-40 -translate-x-1/2 rounded-t-full border-2 border-dashed border-muted-foreground/30 bg-muted/10" />
+          <div className="absolute left-1/2 top-16 h-16 w-32 -translate-x-1/2 rounded-t-full border-2 border-dashed border-muted-foreground/30 bg-muted/10" />
         </div>
         <div className="text-center">
-          <p className="text-sm font-medium text-muted-foreground">No data available yet</p>
-          <p className="text-xs text-muted-foreground/70">Add job applications to see your funnel</p>
+          <p className="text-sm font-medium text-foreground/70">No data available yet</p>
+          <p className="text-xs text-muted-foreground">Add job applications to see your funnel</p>
         </div>
       </div>
     )
@@ -51,7 +55,7 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" role="region" aria-label="Application funnel visualization">
       <div className="space-y-3">
         {funnelStages.map((stage, index) => {
           const percentage = total > 0 ? ((stage.count / total) * 100).toFixed(1) : "0.0"
@@ -63,20 +67,32 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
             <div key={stage.name} className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold">{stage.name}</span>
+                  <span className="text-sm font-semibold text-foreground">{stage.name}</span>
                   {conversionRate && (
-                    <span className="flex items-center gap-1 rounded-full bg-muted/50 px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                      <ArrowRight className="h-3 w-3" />
+                    <span
+                      className="flex items-center gap-1 rounded-full bg-muted/50 px-2 py-0.5 text-xs font-medium text-foreground/80"
+                      aria-label={`${conversionRate} percent conversion from previous stage`}
+                    >
+                      <ArrowRight className="h-3 w-3" aria-hidden="true" />
                       {conversionRate}%
                     </span>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={`text-lg font-bold ${stage.textColor}`}>{stage.count}</span>
+                  <span className={`text-lg font-bold ${stage.textColor}`} aria-label={`${stage.count} applications`}>
+                    {stage.count}
+                  </span>
                   <span className="text-xs text-muted-foreground">({percentage}%)</span>
                 </div>
               </div>
-              <div className="relative h-12 overflow-hidden rounded-lg bg-secondary/30">
+              <div
+                className="relative h-12 overflow-hidden rounded-lg bg-secondary/30"
+                role="progressbar"
+                aria-valuenow={stage.count}
+                aria-valuemin={0}
+                aria-valuemax={total}
+                aria-label={`${stage.name}: ${stage.count} of ${total} applications`}
+              >
                 <div
                   className={`h-full ${stage.color} flex items-center justify-center transition-all duration-700`}
                   style={{ width: `${Math.max(Number.parseFloat(percentage), 5)}%` }}
@@ -89,21 +105,33 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
         })}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 rounded-lg border border-border/50 bg-muted/10 p-4">
+      <div
+        className="grid grid-cols-3 gap-4 rounded-lg border border-border/50 bg-muted/10 p-4"
+        role="region"
+        aria-label="Summary statistics"
+      >
         <div className="text-center">
-          <div className="text-2xl font-bold text-chart-5">{statusCounts.Offer}</div>
+          <div className="text-2xl font-bold text-chart-5" aria-label={`${statusCounts.Offer} offers received`}>
+            {statusCounts.Offer}
+          </div>
           <div className="text-xs text-muted-foreground">Offers</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-chart-1">
+          <div
+            className="text-2xl font-bold text-chart-1"
+            aria-label={`${statusCounts.Applied > 0 ? ((statusCounts.Offer / statusCounts.Applied) * 100).toFixed(1) : "0.0"} percent success rate`}
+          >
             {statusCounts.Applied > 0 ? ((statusCounts.Offer / statusCounts.Applied) * 100).toFixed(1) : "0.0"}%
           </div>
           <div className="text-xs text-muted-foreground">Success Rate</div>
         </div>
         <div className="text-center">
-          <div className="flex items-center justify-center gap-1 text-2xl font-bold text-destructive">
+          <div
+            className="flex items-center justify-center gap-1 text-2xl font-bold text-destructive"
+            aria-label={`${statusCounts.Rejected} applications rejected`}
+          >
             {statusCounts.Rejected}
-            <TrendingDown className="h-4 w-4" />
+            <TrendingDown className="h-4 w-4" aria-hidden="true" />
           </div>
           <div className="text-xs text-muted-foreground">Rejected</div>
         </div>

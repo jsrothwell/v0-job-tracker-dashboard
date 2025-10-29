@@ -43,6 +43,7 @@ export function KeyMetrics({ jobs }: KeyMetricsProps) {
       icon: Target,
       color: "text-chart-1",
       bgColor: "bg-chart-1/10",
+      ariaLabel: `Total applications: ${totalApplications}`,
     },
     {
       label: "Interview Rate",
@@ -50,6 +51,7 @@ export function KeyMetrics({ jobs }: KeyMetricsProps) {
       icon: TrendingUp,
       color: "text-chart-4",
       bgColor: "bg-chart-4/10",
+      ariaLabel: `Interview rate: ${interviewRate} percent`,
     },
     {
       label: "Avg. Response Time",
@@ -57,6 +59,7 @@ export function KeyMetrics({ jobs }: KeyMetricsProps) {
       icon: Clock,
       color: "text-chart-2",
       bgColor: "bg-chart-2/10",
+      ariaLabel: `Average response time: ${avgResponseTime} days`,
     },
     {
       label: "Offers Received",
@@ -64,31 +67,39 @@ export function KeyMetrics({ jobs }: KeyMetricsProps) {
       icon: Award,
       color: "text-chart-5",
       bgColor: "bg-chart-5/10",
+      ariaLabel: `Offers received: ${offers}`,
     },
   ]
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {metrics.map((metric) => {
-        const Icon = metric.icon
-        return (
-          <div
-            key={metric.label}
-            className="glass-card group relative overflow-hidden rounded-xl p-6 transition-all hover:scale-[1.02]"
-          >
-            <div className="flex items-start justify-between">
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-muted-foreground">{metric.label}</p>
-                <p className={`text-4xl font-bold tracking-tight ${metric.color}`}>{metric.value}</p>
+    <section aria-label="Key metrics overview">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {metrics.map((metric) => {
+          const Icon = metric.icon
+          return (
+            <div
+              key={metric.label}
+              className="glass-card group relative overflow-hidden rounded-xl p-6 transition-all hover:scale-[1.02] focus-within:ring-2 focus-within:ring-ring"
+              role="article"
+              aria-label={metric.ariaLabel}
+              tabIndex={0}
+            >
+              <div className="flex items-start justify-between">
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground">{metric.label}</h3>
+                  <p className={`text-4xl font-bold tracking-tight text-foreground`}>
+                    <span className={metric.color}>{metric.value}</span>
+                  </p>
+                </div>
+                <div className={`rounded-lg ${metric.bgColor} p-3`} aria-hidden="true">
+                  <Icon className={`h-6 w-6 ${metric.color}`} />
+                </div>
               </div>
-              <div className={`rounded-lg ${metric.bgColor} p-3`}>
-                <Icon className={`h-6 w-6 ${metric.color}`} />
-              </div>
+              <div className={`absolute inset-x-0 bottom-0 h-1 ${metric.bgColor} opacity-50`} aria-hidden="true" />
             </div>
-            <div className={`absolute inset-x-0 bottom-0 h-1 ${metric.bgColor} opacity-50`} />
-          </div>
-        )
-      })}
-    </div>
+          )
+        })}
+      </div>
+    </section>
   )
 }

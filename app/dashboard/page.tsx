@@ -20,7 +20,7 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader user={user} />
-      <main className="container mx-auto space-y-8 p-6">
+      <main className="container mx-auto space-y-8 p-6" aria-label="Job application dashboard">
         <DataVisualizationPanel jobs={jobs || []} />
         <KanbanBoard initialJobs={jobs || []} userId={user.id} />
       </main>
