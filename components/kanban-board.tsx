@@ -126,7 +126,7 @@ export function KanbanBoard({ initialJobs, userId }: KanbanBoardProps) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold">Application Pipeline</h2>
-          <p className="text-muted-foreground">Track your job applications across different stages</p>
+          <p className="text-white/70">Track your job applications across different stages</p>
         </div>
         <Button onClick={() => setIsAddDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />

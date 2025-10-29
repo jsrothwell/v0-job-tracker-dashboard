@@ -48,7 +48,7 @@ export function JobCard({ job, onDelete }: JobCardProps) {
     >
       <CardHeader className="space-y-2 p-4 pb-3">
         <div className="flex items-start justify-between gap-2">
-          <h4 className="line-clamp-2 text-balance font-semibold leading-tight text-foreground">{job.job_title}</h4>
+          <h4 className="line-clamp-2 text-balance font-semibold leading-tight text-white">{job.job_title}</h4>
           <Button
             variant="ghost"
             size="icon"
@@ -61,7 +61,7 @@ export function JobCard({ job, onDelete }: JobCardProps) {
             <Trash2 className="h-3.5 w-3.5 text-destructive" />
           </Button>
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 text-sm text-white/70">
           <Building2 className="h-4 w-4 shrink-0" />
           <span className="truncate font-medium">{job.company_name}</span>
         </div>
@@ -69,8 +69,8 @@ export function JobCard({ job, onDelete }: JobCardProps) {
       <CardContent className="space-y-2 p-4 pt-0">
         {job.date_applied && (
           <div className="flex items-center gap-2 text-sm">
-            <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
-            <span className="text-muted-foreground">
+            <Calendar className="h-4 w-4 shrink-0 text-white/60" />
+            <span className="text-white/70">
               {new Date(job.date_applied).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
@@ -88,8 +88,8 @@ export function JobCard({ job, onDelete }: JobCardProps) {
         {job.contact_name && (
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-sm">
-              <User className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <span className="truncate text-muted-foreground">{job.contact_name}</span>
+              <User className="h-4 w-4 shrink-0 text-white/60" />
+              <span className="truncate text-white/70">{job.contact_name}</span>
             </div>
             <Button
               variant="ghost"

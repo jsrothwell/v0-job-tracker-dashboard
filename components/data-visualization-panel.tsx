@@ -28,10 +28,10 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
       <KeyMetrics jobs={jobs} />
 
       <div>
-        <h2 id="analytics-heading" className="text-3xl font-bold tracking-tight text-foreground">
+        <h2 id="analytics-heading" className="text-3xl font-bold tracking-tight text-white">
           Analytics Dashboard
         </h2>
-        <p className="text-muted-foreground">Visualize your job search progress and conversion rates</p>
+        <p className="text-white/70">Visualize your job search progress and conversion rates</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -40,10 +40,10 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
           aria-labelledby="funnel-heading"
         >
           <div className="mb-6 space-y-1">
-            <h3 id="funnel-heading" className="text-xl font-semibold text-foreground">
+            <h3 id="funnel-heading" className="text-xl font-semibold text-white">
               Application Funnel
             </h3>
-            <p className="text-sm text-muted-foreground">Track conversion rates across each stage</p>
+            <p className="text-sm text-white/70">Track conversion rates across each stage</p>
           </div>
           <ApplicationFunnelChart jobs={jobs} />
         </article>
@@ -53,10 +53,10 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
           aria-labelledby="timeline-heading"
         >
           <div className="mb-6 space-y-1">
-            <h3 id="timeline-heading" className="text-xl font-semibold text-foreground">
+            <h3 id="timeline-heading" className="text-xl font-semibold text-white">
               Application Timeline
             </h3>
-            <p className="text-sm text-muted-foreground">Monitor your application activity over time</p>
+            <p className="text-sm text-white/70">Monitor your application activity over time</p>
           </div>
           <TimeSeriesChart jobs={jobs} />
         </article>
