@@ -42,26 +42,26 @@
 /* Updated dark theme with WCAG AA compliant colors for better accessibility */
 .dark {
   --background: oklch(0.08 0.012 240);
-  /* Changed foreground to pure white for maximum contrast */
-  --foreground: oklch(0.98 0 0);
+  /* Pure white for maximum contrast on dark backgrounds */
+  --foreground: oklch(1 0 0);
   --card: oklch(0.12 0.015 240);
-  /* Card text now pure white for readability */
-  --card-foreground: oklch(0.98 0 0);
+  /* Card text pure white for readability */
+  --card-foreground: oklch(1 0 0);
   --popover: oklch(0.11 0.015 240);
-  --popover-foreground: oklch(0.98 0 0);
+  --popover-foreground: oklch(1 0 0);
   /* Vibrant electric blue accent for interactive elements */
   --primary: oklch(0.65 0.2 240);
   --primary-foreground: oklch(0.08 0.012 240);
   --secondary: oklch(0.18 0.02 240);
-  --secondary-foreground: oklch(0.98 0 0);
+  --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.16 0.018 240);
-  /* Lighter muted text for better visibility while still being subtle */
-  --muted-foreground: oklch(0.7 0.01 240);
+  /* Very light gray for secondary text - highly visible */
+  --muted-foreground: oklch(0.85 0.005 240);
   /* Brighter accent color for interactive elements */
   --accent: oklch(0.7 0.25 220);
   --accent-foreground: oklch(0.08 0.012 240);
   --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.98 0 0);
+  --destructive-foreground: oklch(1 0 0);
   /* Lighter border for better card definition */
   --border: oklch(0.25 0.02 240);
   --input: oklch(0.2 0.02 240);
@@ -73,11 +73,11 @@
   --chart-4: oklch(0.75 0.2 260);
   --chart-5: oklch(0.68 0.15 140);
   --sidebar: oklch(0.12 0.015 240);
-  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(1 0 0);
   --sidebar-primary: oklch(0.65 0.2 240);
   --sidebar-primary-foreground: oklch(0.08 0.012 240);
   --sidebar-accent: oklch(0.18 0.02 240);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-accent-foreground: oklch(1 0 0);
   --sidebar-border: oklch(0.25 0.02 240);
   --sidebar-ring: oklch(0.7 0.25 220);
 }

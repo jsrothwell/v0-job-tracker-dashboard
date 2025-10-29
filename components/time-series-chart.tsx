@@ -62,25 +62,25 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
         aria-label="No timeline data available"
       >
         <div className="relative h-32 w-full" aria-hidden="true">
-          <svg className="h-full w-full opacity-30" viewBox="0 0 400 120">
+          <svg className="h-full w-full opacity-50" viewBox="0 0 400 120">
             <path
               d="M 0 100 L 50 80 L 100 90 L 150 60 L 200 70 L 250 40 L 300 50 L 350 30 L 400 40"
               stroke="currentColor"
               strokeWidth="2"
               fill="none"
               strokeDasharray="5,5"
-              className="text-muted-foreground"
+              className="text-white"
             />
             {[0, 50, 100, 150, 200, 250, 300, 350, 400].map((x) => (
-              <circle key={x} cx={x} cy={100 - x / 10} r="3" fill="currentColor" className="text-muted-foreground" />
+              <circle key={x} cx={x} cy={100 - x / 10} r="3" fill="currentColor" className="text-white" />
             ))}
           </svg>
         </div>
         <div className="flex items-center gap-2 text-center">
-          <Calendar className="h-4 w-4 text-foreground/60" aria-hidden="true" />
+          <Calendar className="h-4 w-4 text-white/90" aria-hidden="true" />
           <div>
-            <p className="text-sm font-medium text-foreground/70">No timeline data yet</p>
-            <p className="text-xs text-muted-foreground">Start adding applications to track trends</p>
+            <p className="text-sm font-medium text-white">No timeline data yet</p>
+            <p className="text-xs text-white/80">Start adding applications to track trends</p>
           </div>
         </div>
       </div>
@@ -134,16 +134,16 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
         aria-label="Timeline summary statistics"
       >
         <div className="text-center">
-          <div className="text-2xl font-bold text-foreground" aria-label={`${totalApplications} total applications`}>
+          <div className="text-2xl font-bold text-white" aria-label={`${totalApplications} total applications`}>
             {totalApplications}
           </div>
-          <div className="text-xs text-muted-foreground">Total</div>
+          <div className="text-xs text-white/80">Total</div>
         </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-chart-1" aria-label={`${avgPerMonth} average applications per month`}>
             {avgPerMonth}
           </div>
-          <div className="text-xs text-muted-foreground">Avg/Month</div>
+          <div className="text-xs text-white/80">Avg/Month</div>
         </div>
         <div className="text-center">
           <div
@@ -152,7 +152,7 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
           >
             {chartData.length > 0 ? maxMonth.applications : 0}
           </div>
-          <div className="text-xs text-muted-foreground">Peak</div>
+          <div className="text-xs text-white/80">Peak</div>
         </div>
       </div>
     </div>
