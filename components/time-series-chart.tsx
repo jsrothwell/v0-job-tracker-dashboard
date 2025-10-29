@@ -69,18 +69,18 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
               strokeWidth="2"
               fill="none"
               strokeDasharray="5,5"
-              className="text-white"
+              className="text-foreground"
             />
             {[0, 50, 100, 150, 200, 250, 300, 350, 400].map((x) => (
-              <circle key={x} cx={x} cy={100 - x / 10} r="3" fill="currentColor" className="text-white" />
+              <circle key={x} cx={x} cy={100 - x / 10} r="3" fill="currentColor" className="text-foreground" />
             ))}
           </svg>
         </div>
         <div className="flex items-center gap-2 text-center">
-          <Calendar className="h-4 w-4 text-white/90" aria-hidden="true" />
+          <Calendar className="h-4 w-4 text-foreground/90" aria-hidden="true" />
           <div>
-            <p className="text-sm font-medium text-white">No timeline data yet</p>
-            <p className="text-xs text-white/80">Start adding applications to track trends</p>
+            <p className="text-sm font-medium text-foreground">No timeline data yet</p>
+            <p className="text-xs text-foreground/80">Start adding applications to track trends</p>
           </div>
         </div>
       </div>
@@ -134,16 +134,16 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
         aria-label="Timeline summary statistics"
       >
         <div className="text-center">
-          <div className="text-2xl font-bold text-white" aria-label={`${totalApplications} total applications`}>
+          <div className="text-2xl font-bold text-foreground" aria-label={`${totalApplications} total applications`}>
             {totalApplications}
           </div>
-          <div className="text-xs text-white/80">Total</div>
+          <div className="text-xs text-foreground/80">Total</div>
         </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-chart-1" aria-label={`${avgPerMonth} average applications per month`}>
             {avgPerMonth}
           </div>
-          <div className="text-xs text-white/80">Avg/Month</div>
+          <div className="text-xs text-foreground/80">Avg/Month</div>
         </div>
         <div className="text-center">
           <div
@@ -152,7 +152,7 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
           >
             {chartData.length > 0 ? maxMonth.applications : 0}
           </div>
-          <div className="text-xs text-white/80">Peak</div>
+          <div className="text-xs text-foreground/80">Peak</div>
         </div>
       </div>
     </div>
