@@ -28,13 +28,13 @@ export function KanbanColumn({ id, title, color, jobs, onDeleteJob }: KanbanColu
   return (
     <div
       ref={setNodeRef}
-      className={`flex min-h-[600px] flex-col rounded-lg border-2 ${color} p-4 transition-colors ${
-        isOver ? "ring-2 ring-primary" : ""
+      className={`glass-card flex min-h-[600px] flex-col rounded-xl p-4 transition-all ${
+        isOver ? "ring-2 ring-primary shadow-xl" : ""
       }`}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="font-semibold">{title}</h3>
-        <Badge variant="secondary" className="text-xs">
+        <h3 className="font-semibold tracking-tight">{title}</h3>
+        <Badge variant="secondary" className="rounded-full px-2.5 text-xs font-bold">
           {jobs.length}
         </Badge>
       </div>

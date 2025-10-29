@@ -1,8 +1,8 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ApplicationFunnelChart } from "@/components/application-funnel-chart"
 import { TimeSeriesChart } from "@/components/time-series-chart"
+import { KeyMetrics } from "@/components/key-metrics"
 
 type JobStatus = "Wishlist" | "Applied" | "Interviewing" | "Offer" | "Rejected"
 
@@ -25,31 +25,29 @@ interface DataVisualizationPanelProps {
 export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
   return (
     <div className="space-y-6">
+      <KeyMetrics jobs={jobs} />
+
       <div>
-        <h2 className="text-3xl font-bold">Analytics Dashboard</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h2>
         <p className="text-muted-foreground">Visualize your job search progress and conversion rates</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="border-border/50 bg-card">
-          <CardHeader>
-            <CardTitle>Application Funnel</CardTitle>
-            <CardDescription>Track conversion rates across each stage of your job search</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ApplicationFunnelChart jobs={jobs} />
-          </CardContent>
-        </Card>
+        <div className="glass-card rounded-xl p-6">
+          <div className="mb-6 space-y-1">
+            <h3 className="text-xl font-semibold">Application Funnel</h3>
+            <p className="text-sm text-muted-foreground">Track conversion rates across each stage</p>
+          </div>
+          <ApplicationFunnelChart jobs={jobs} />
+        </div>
 
-        <Card className="border-border/50 bg-card">
-          <CardHeader>
-            <CardTitle>Application Timeline</CardTitle>
-            <CardDescription>Monitor your application activity over time</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <TimeSeriesChart jobs={jobs} />
-          </CardContent>
-        </Card>
+        <div className="glass-card rounded-xl p-6">
+          <div className="mb-6 space-y-1">
+            <h3 className="text-xl font-semibold">Application Timeline</h3>
+            <p className="text-sm text-muted-foreground">Monitor your application activity over time</p>
+          </div>
+          <TimeSeriesChart jobs={jobs} />
+        </div>
       </div>
     </div>
   )

@@ -40,30 +40,30 @@ export function JobCard({ job, onDelete }: JobCardProps) {
     <Card
       ref={setNodeRef}
       style={style}
-      className={`cursor-grab active:cursor-grabbing ${
+      className={`glass-card-light cursor-grab active:cursor-grabbing ${
         isDragging ? "opacity-50" : ""
-      } border-border/50 bg-card transition-shadow hover:shadow-lg`}
+      } group transition-all hover:scale-[1.02] hover:shadow-xl`}
       {...listeners}
       {...attributes}
     >
       <CardHeader className="space-y-2 p-4 pb-3">
         <div className="flex items-start justify-between gap-2">
-          <h4 className="line-clamp-2 text-balance font-semibold leading-tight">{job.job_title}</h4>
+          <h4 className="line-clamp-2 text-balance font-semibold leading-tight text-foreground">{job.job_title}</h4>
           <Button
             variant="ghost"
             size="icon"
-            className="h-7 w-7 shrink-0 text-muted-foreground hover:text-destructive"
+            className="h-7 w-7 shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
             onClick={(e) => {
               e.stopPropagation()
               onDelete(job.id)
             }}
           >
-            <Trash2 className="h-3.5 w-3.5" />
+            <Trash2 className="h-3.5 w-3.5 text-destructive" />
           </Button>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Building2 className="h-4 w-4 shrink-0" />
-          <span className="truncate">{job.company_name}</span>
+          <span className="truncate font-medium">{job.company_name}</span>
         </div>
       </CardHeader>
       <CardContent className="space-y-2 p-4 pt-0">
@@ -81,8 +81,8 @@ export function JobCard({ job, onDelete }: JobCardProps) {
         )}
         {job.expected_salary && (
           <div className="flex items-center gap-2 text-sm">
-            <DollarSign className="h-4 w-4 shrink-0 text-muted-foreground" />
-            <span className="font-medium text-foreground">{job.expected_salary}</span>
+            <DollarSign className="h-4 w-4 shrink-0 text-chart-5" />
+            <span className="font-semibold text-chart-5">{job.expected_salary}</span>
           </div>
         )}
         {job.contact_name && (
@@ -94,7 +94,7 @@ export function JobCard({ job, onDelete }: JobCardProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 shrink-0"
+              className="h-7 w-7 shrink-0 hover:bg-[#0A66C2]/10"
               onClick={(e) => {
                 e.stopPropagation()
                 handleLinkedInSearch()
