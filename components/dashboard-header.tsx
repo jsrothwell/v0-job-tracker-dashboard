@@ -28,8 +28,8 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
             <BarChart3 className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Job Tracker</h1>
-            <p className="text-sm text-white/70">{user.email}</p>
+            <h1 className="text-xl font-bold text-foreground">Job Tracker</h1>
+            <p className="text-sm text-foreground-muted/70">{user.email}</p>
           </div>
         </div>
         <Button

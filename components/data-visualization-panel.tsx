@@ -31,7 +31,7 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
         <h2 id="analytics-heading" className="text-3xl font-bold tracking-tight text-foreground">
           Analytics Dashboard
         </h2>
-        <p className="text-white/70">Visualize your job search progress and conversion rates</p>
+        <p className="text-foreground/70">Visualize your job search progress and conversion rates</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
