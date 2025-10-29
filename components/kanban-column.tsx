@@ -34,7 +34,7 @@ export function KanbanColumn({ id, title, color, jobs, onDeleteJob }: KanbanColu
     >
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-semibold tracking-tight text-foreground">{title}</h3>
-        <Badge variant="secondary" className="rounded-full px-2.5 text-xs font-bold text-white">
+        <Badge variant="secondary" className="rounded-full px-2.5 text-xs font-bold text-foreground">
           {jobs.length}
         </Badge>
       </div>
