@@ -3,6 +3,7 @@
 import { ApplicationFunnelChart } from "@/components/application-funnel-chart"
 import { TimeSeriesChart } from "@/components/time-series-chart"
 import { KeyMetrics } from "@/components/key-metrics"
+import { useEffect } from "react"
 
 type JobStatus = "Wishlist" | "Applied" | "Interviewing" | "Offer" | "Rejected"
 
@@ -23,6 +24,10 @@ interface DataVisualizationPanelProps {
 }
 
 export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
+  useEffect(() => {
+    console.log("[v0] DataVisualizationPanel received jobs:", jobs.length)
+  }, [jobs])
+
   return (
     <section className="space-y-6" aria-labelledby="analytics-heading">
       <KeyMetrics jobs={jobs} />
@@ -45,7 +50,7 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
             </h3>
             <p className="text-sm text-foreground/70">Track conversion rates across each stage</p>
           </div>
-          <ApplicationFunnelChart jobs={jobs} />
+          <ApplicationFunnelChart jobs={jobs} key={`funnel-${jobs.length}`} />
         </article>
 
         <article
@@ -58,7 +63,7 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
             </h3>
             <p className="text-sm text-foreground/70">Monitor your application activity over time</p>
           </div>
-          <TimeSeriesChart jobs={jobs} />
+          <TimeSeriesChart jobs={jobs} key={`timeline-${jobs.length}`} />
         </article>
       </div>
     </section>
