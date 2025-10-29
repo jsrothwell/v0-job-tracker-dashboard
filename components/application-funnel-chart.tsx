@@ -40,8 +40,8 @@ export function ApplicationFunnelChart({ jobs }: ApplicationFunnelChartProps) {
           <div className="absolute left-1/2 top-16 h-16 w-32 -translate-x-1/2 rounded-t-full border-2 border-dashed border-white/40 bg-white/5" />
         </div>
         <div className="text-center">
-          <p className="text-sm font-medium text-white">No data available yet</p>
-          <p className="text-xs text-white/80">Add job applications to see your funnel</p>
+          <p className="text-sm font-medium text-foreground">No data available yet</p>
+          <p className="text-xs text-foreground/80">Add job applications to see your funnel</p>
         </div>
       </div>
     )
