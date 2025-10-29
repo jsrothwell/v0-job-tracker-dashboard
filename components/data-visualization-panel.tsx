@@ -28,7 +28,7 @@ export function DataVisualizationPanel({ jobs }: DataVisualizationPanelProps) {
       <KeyMetrics jobs={jobs} />
 
       <div>
-        <h2 id="analytics-heading" className="text-3xl font-bold tracking-tight text-white">
+        <h2 id="analytics-heading" className="text-3xl font-bold tracking-tight text-foreground">
           Analytics Dashboard
         </h2>
         <p className="text-white/70">Visualize your job search progress and conversion rates</p>
