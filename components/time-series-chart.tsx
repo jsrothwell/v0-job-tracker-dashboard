@@ -36,7 +36,16 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
 
     if (sortedData.length > 0) {
       const result = []
-      const startDate = new Date(sortedData[0].month)
+      // Store the numeric values
+return {
+  month: date.toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+  year: Number.parseInt(year),        // ✅ Added
+  monthNum: Number.parseInt(monthNum) - 1,  // ✅ Added
+  applications: count,
+}
+
+// Use numeric values instead of parsing formatted string
+const startDate = new Date(sortedData[0].year, sortedData[0].monthNum) // ✅ Fixed!
       const endDate = new Date()
 
       for (let d = new Date(startDate); d <= endDate; d.setMonth(d.getMonth() + 1)) {
@@ -134,7 +143,7 @@ export function TimeSeriesChart({ jobs }: TimeSeriesChartProps) {
         aria-label="Timeline summary statistics"
       >
         <div className="text-center">
-          <div className="text-2xl font-bold text-white" aria-label={`${totalApplications} total applications`}>
+          <div className="text-2xl font-bold text-foreground" aria-label={`${totalApplications} total applications`}>
             {totalApplications}
           </div>
           <div className="text-xs text-white/80">Total</div>
