@@ -199,7 +199,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
         </DialogHeader>
 
         {/* 3. Update ScrollArea: Add horizontal padding */}
-              <ScrollArea className="flex-1 max-h-full px-6">
+              <ScrollArea className="flex-1 h-0 px-6">
           <div className="space-y-6 pb-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column: Core Details */}
