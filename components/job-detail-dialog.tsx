@@ -353,7 +353,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
               </div>
             </div>
 
-            <Separator />
+            {/* <Separator />
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -405,7 +405,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
                   )}
                 </ScrollArea>
               </div>
-            </div>
+            </div> */}
 
             <Separator />
 
