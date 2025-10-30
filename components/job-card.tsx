@@ -20,9 +20,10 @@ interface Job {
 interface JobCardProps {
   job: Job
   onDelete: (jobId: string) => void
+  onClick?: (job: Job) => void // Added onClick handler for detail view
 }
 
-export function JobCard({ job, onDelete }: JobCardProps) {
+export function JobCard({ job, onDelete, onClick }: JobCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: job.id,
   })
@@ -49,6 +50,12 @@ export function JobCard({ job, onDelete }: JobCardProps) {
       } group transition-all hover:scale-[1.02] hover:shadow-lg`}
       {...listeners}
       {...attributes}
+      onClick={(e) => {
+        // Only trigger if not clicking on buttons
+        if (!(e.target as HTMLElement).closest("button")) {
+          onClick?.(job)
+        }
+      }}
     >
       <CardHeader className="space-y-2 p-4 pb-3">
         <div className="flex items-start justify-between gap-2">

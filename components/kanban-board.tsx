@@ -17,6 +17,7 @@ import { CelebrationToast } from "@/components/celebration-toast"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
+import { JobDetailDialog } from "@/components/job-detail-dialog"
 
 type JobStatus = "Wishlist" | "Applied" | "Interviewing" | "Offer" | "Rejected"
 
@@ -55,6 +56,8 @@ export function KanbanBoard({ initialJobs, userId, onJobsChange }: KanbanBoardPr
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [showCelebration, setShowCelebration] = useState(false)
   const [celebrationJobTitle, setCelebrationJobTitle] = useState("")
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null) // Added state for selected job
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false) // Added state for detail dialog
   const supabase = createClient()
 
   const sensors = useSensors(
@@ -137,6 +140,11 @@ export function KanbanBoard({ initialJobs, userId, onJobsChange }: KanbanBoardPr
     return jobs.filter((job) => job.status === status)
   }
 
+  const handleJobClick = (job: Job) => {
+    setSelectedJob(job)
+    setIsDetailDialogOpen(true)
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -160,6 +168,7 @@ export function KanbanBoard({ initialJobs, userId, onJobsChange }: KanbanBoardPr
               color={column.color}
               jobs={getJobsByStatus(column.id)}
               onDeleteJob={handleDeleteJob}
+              onJobClick={handleJobClick} // Pass click handler to column
             />
           ))}
         </div>
@@ -174,6 +183,8 @@ export function KanbanBoard({ initialJobs, userId, onJobsChange }: KanbanBoardPr
       </DndContext>
 
       <AddJobDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} onAdd={handleAddJob} />
+
+      <JobDetailDialog job={selectedJob} open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen} />
 
       <CelebrationToast
         show={showCelebration}

@@ -138,7 +138,7 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={handleDialogChange}>
-      <DialogContent className="sm:max-w-[550px]">
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         {/* Choice View */}
         {viewMode === "choice" && (
           <>
@@ -242,58 +242,169 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
                   : "Enter the details of your job application to track it in your pipeline."}
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="job_title" className="flex items-center gap-2">
-                  Job Title *
-                  {extractedData.job_title && (
-                    <span className="text-xs text-primary font-normal flex items-center gap-1">
-                      <Sparkles className="h-3 w-3" />
-                      Auto-filled
-                    </span>
-                  )}
-                </Label>
-                <Input
-                  id="job_title"
-                  required
-                  value={formData.job_title}
-                  onChange={(e) => setFormData({ ...formData, job_title: e.target.value })}
-                  placeholder="Senior Software Engineer"
-                  className={extractedData.job_title ? "bg-primary/5 border-primary/20" : ""}
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left Column: Auto-Filled Fields */}
+                <div className="space-y-4">
+                  <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+                    {Object.keys(extractedData).length > 0 ? "Auto-Filled Information" : "Job Information"}
+                  </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="company_name" className="flex items-center gap-2">
-                  Company Name *
-                  {extractedData.company_name && (
-                    <span className="text-xs text-primary font-normal flex items-center gap-1">
-                      <Sparkles className="h-3 w-3" />
-                      Auto-filled
-                    </span>
-                  )}
-                </Label>
-                <Input
-                  id="company_name"
-                  required
-                  value={formData.company_name}
-                  onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-                  placeholder="Acme Corp"
-                  className={extractedData.company_name ? "bg-primary/5 border-primary/20" : ""}
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="job_title" className="flex items-center gap-2">
+                      Job Title *
+                      {extractedData.job_title && (
+                        <span className="text-xs text-primary font-normal flex items-center gap-1">
+                          <Sparkles className="h-3 w-3" />
+                          Auto-filled
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      id="job_title"
+                      required
+                      value={formData.job_title}
+                      onChange={(e) => setFormData({ ...formData, job_title: e.target.value })}
+                      placeholder="Senior Software Engineer"
+                      className={extractedData.job_title ? "bg-primary/5 border-primary/20" : ""}
+                    />
+                  </div>
 
-              {extractedData.location && (
-                <div className="rounded-lg bg-muted/50 p-3 space-y-1">
-                  <Label className="text-xs text-muted-foreground">Extracted Location</Label>
-                  <p className="text-sm">{extractedData.location}</p>
+                  <div className="space-y-2">
+                    <Label htmlFor="company_name" className="flex items-center gap-2">
+                      Company Name *
+                      {extractedData.company_name && (
+                        <span className="text-xs text-primary font-normal flex items-center gap-1">
+                          <Sparkles className="h-3 w-3" />
+                          Auto-filled
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      id="company_name"
+                      required
+                      value={formData.company_name}
+                      onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
+                      placeholder="Acme Corp"
+                      className={extractedData.company_name ? "bg-primary/5 border-primary/20" : ""}
+                    />
+                  </div>
+
+                  {extractedData.location && (
+                    <div className="rounded-lg bg-primary/5 border border-primary/20 p-3 space-y-1">
+                      <Label className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Sparkles className="h-3 w-3 text-primary" />
+                        Location
+                      </Label>
+                      <p className="text-sm font-medium">{extractedData.location}</p>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="date_applied" className="flex items-center gap-2">
+                      Date Applied
+                      {extractedData.job_title && (
+                        <span className="text-xs text-primary font-normal flex items-center gap-1">
+                          <Sparkles className="h-3 w-3" />
+                          Auto-filled
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      id="date_applied"
+                      type="date"
+                      value={formData.date_applied}
+                      onChange={(e) => setFormData({ ...formData, date_applied: e.target.value })}
+                      className={extractedData.job_title ? "bg-primary/5 border-primary/20" : ""}
+                    />
+                  </div>
                 </div>
-              )}
 
+                {/* Right Column: User Input Fields */}
+                <div className="space-y-4">
+                  <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+                    Your Information
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="expected_salary">Expected Salary</Label>
+                    <Input
+                      id="expected_salary"
+                      value={formData.expected_salary}
+                      onChange={(e) => setFormData({ ...formData, expected_salary: e.target.value })}
+                      placeholder="$120,000"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contact_name">Contact Name</Label>
+                    <Input
+                      id="contact_name"
+                      value={formData.contact_name}
+                      onChange={(e) => setFormData({ ...formData, contact_name: e.target.value })}
+                      placeholder="Jane Smith"
+                    />
+                    <p className="text-xs text-muted-foreground">Recruiter or Hiring Manager</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="status">Initial Stage *</Label>
+                    <Select
+                      value={formData.status}
+                      onValueChange={(value: JobStatus) => setFormData({ ...formData, status: value })}
+                    >
+                      <SelectTrigger id="status">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Wishlist">Wishlist</SelectItem>
+                        <SelectItem value="Applied">Applied</SelectItem>
+                        <SelectItem value="Interviewing">Interviewing</SelectItem>
+                        <SelectItem value="Offer">Offer</SelectItem>
+                        <SelectItem value="Rejected">Rejected</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label>Documents</Label>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="has_resume"
+                        checked={formData.has_resume}
+                        onCheckedChange={(checked) => setFormData({ ...formData, has_resume: checked as boolean })}
+                      />
+                      <label
+                        htmlFor="has_resume"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Resume uploaded
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="has_cover_letter"
+                        checked={formData.has_cover_letter}
+                        onCheckedChange={(checked) =>
+                          setFormData({ ...formData, has_cover_letter: checked as boolean })
+                        }
+                      />
+                      <label
+                        htmlFor="has_cover_letter"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Cover letter uploaded
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Job Description Snippet - Full Width */}
               {extractedData.description && (
                 <div className="space-y-2">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
-                    <Sparkles className="h-3 w-3" />
+                    <Sparkles className="h-3 w-3 text-primary" />
                     Job Description Snippet
                   </Label>
                   <Textarea
@@ -304,87 +415,7 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="date_applied">Date Applied</Label>
-                  <Input
-                    id="date_applied"
-                    type="date"
-                    value={formData.date_applied}
-                    onChange={(e) => setFormData({ ...formData, date_applied: e.target.value })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="expected_salary">Expected Salary</Label>
-                  <Input
-                    id="expected_salary"
-                    value={formData.expected_salary}
-                    onChange={(e) => setFormData({ ...formData, expected_salary: e.target.value })}
-                    placeholder="$120,000"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="contact_name">Contact Name (Recruiter/Hiring Manager)</Label>
-                <Input
-                  id="contact_name"
-                  value={formData.contact_name}
-                  onChange={(e) => setFormData({ ...formData, contact_name: e.target.value })}
-                  placeholder="Jane Smith"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="status">Status *</Label>
-                <Select
-                  value={formData.status}
-                  onValueChange={(value: JobStatus) => setFormData({ ...formData, status: value })}
-                >
-                  <SelectTrigger id="status">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Wishlist">Wishlist</SelectItem>
-                    <SelectItem value="Applied">Applied</SelectItem>
-                    <SelectItem value="Interviewing">Interviewing</SelectItem>
-                    <SelectItem value="Offer">Offer</SelectItem>
-                    <SelectItem value="Rejected">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-3">
-                <Label>Documents</Label>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="has_resume"
-                    checked={formData.has_resume}
-                    onCheckedChange={(checked) => setFormData({ ...formData, has_resume: checked as boolean })}
-                  />
-                  <label
-                    htmlFor="has_resume"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Resume uploaded
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="has_cover_letter"
-                    checked={formData.has_cover_letter}
-                    onCheckedChange={(checked) => setFormData({ ...formData, has_cover_letter: checked as boolean })}
-                  />
-                  <label
-                    htmlFor="has_cover_letter"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Cover letter uploaded
-                  </label>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-2">
+              <div className="flex justify-end gap-3 pt-2 border-t">
                 <Button type="button" variant="outline" onClick={() => handleDialogChange(false)}>
                   Cancel
                 </Button>

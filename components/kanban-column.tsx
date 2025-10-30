@@ -1,3 +1,5 @@
+"use client"
+
 import { useDroppable } from "@dnd-kit/core"
 import { JobCard } from "@/components/job-card"
 import { Badge } from "@/components/ui/badge"
@@ -12,6 +14,8 @@ interface Job {
   expected_salary: string | null
   contact_name: string | null
   status: JobStatus
+  has_resume?: boolean
+  has_cover_letter?: boolean
 }
 
 interface KanbanColumnProps {
@@ -20,9 +24,10 @@ interface KanbanColumnProps {
   color: string
   jobs: Job[]
   onDeleteJob: (jobId: string) => void
+  onJobClick?: (job: Job) => void // Added onClick handler prop
 }
 
-export function KanbanColumn({ id, title, color, jobs, onDeleteJob }: KanbanColumnProps) {
+export function KanbanColumn({ id, title, color, jobs, onDeleteJob, onJobClick }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({ id })
 
   return (
@@ -40,7 +45,7 @@ export function KanbanColumn({ id, title, color, jobs, onDeleteJob }: KanbanColu
       </div>
       <div className="space-y-3 overflow-y-auto">
         {jobs.map((job) => (
-          <JobCard key={job.id} job={job} onDelete={onDeleteJob} />
+          <JobCard key={job.id} job={job} onDelete={onDeleteJob} onClick={onJobClick} />
         ))}
       </div>
     </div>
