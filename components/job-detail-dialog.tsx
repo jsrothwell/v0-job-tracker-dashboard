@@ -407,7 +407,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
               </div>
             </div> */}
 
-            <Separator />
+            {/* <Separator />
 
             {/* Company Insights Panel (Read-Only) */}
             <div className="space-y-4">
@@ -473,7 +473,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
                   </div>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         </ScrollArea>
 
