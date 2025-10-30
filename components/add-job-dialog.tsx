@@ -19,6 +19,8 @@ interface AddJobDialogProps {
   onAdd: (job: {
     job_title: string
     company_name: string
+    location: string | null
+    job_type: string | null
     date_applied: string | null
     expected_salary: string | null
     contact_name: string | null
@@ -38,12 +40,15 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
     job_title?: string
     company_name?: string
     location?: string
+    job_type?: string
     description?: string
   }>({})
 
   const [formData, setFormData] = useState({
     job_title: "",
     company_name: "",
+    location: "",
+    job_type: "",
     date_applied: "",
     expected_salary: "",
     contact_name: "",
@@ -68,11 +73,12 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
       const data = await response.json()
       setExtractedData(data)
 
-      // Pre-populate form with extracted data
       setFormData({
         ...formData,
         job_title: data.job_title || "",
         company_name: data.company_name || "",
+        location: data.location || "",
+        job_type: data.job_type || "",
       })
 
       setViewMode("manual")
@@ -89,14 +95,17 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
     e.preventDefault()
     onAdd({
       ...formData,
+      location: formData.location || null,
+      job_type: formData.job_type || null,
       date_applied: formData.date_applied || null,
       expected_salary: formData.expected_salary || null,
       contact_name: formData.contact_name || null,
     })
-    // Reset state
     setFormData({
       job_title: "",
       company_name: "",
+      location: "",
+      job_type: "",
       date_applied: "",
       expected_salary: "",
       contact_name: "",
@@ -118,13 +127,14 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
 
   const handleDialogChange = (open: boolean) => {
     if (!open) {
-      // Reset state when closing
       setViewMode("choice")
       setJobUrl("")
       setExtractedData({})
       setFormData({
         job_title: "",
         company_name: "",
+        location: "",
+        job_type: "",
         date_applied: "",
         expected_salary: "",
         contact_name: "",
@@ -139,7 +149,6 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
   return (
     <Dialog open={open} onOpenChange={handleDialogChange}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
-        {/* Choice View */}
         {viewMode === "choice" && (
           <>
             <DialogHeader>
@@ -169,7 +178,6 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
           </>
         )}
 
-        {/* URL Input View */}
         {viewMode === "url" && (
           <>
             <DialogHeader>
@@ -224,7 +232,6 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
           </>
         )}
 
-        {/* Manual Entry Form */}
         {viewMode === "manual" && (
           <>
             <DialogHeader>
@@ -244,7 +251,6 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Left Column: Auto-Filled Fields */}
                 <div className="space-y-4">
                   <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
                     {Object.keys(extractedData).length > 0 ? "Auto-Filled Information" : "Job Information"}
@@ -301,6 +307,53 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
                   )}
 
                   <div className="space-y-2">
+                    <Label htmlFor="location" className="flex items-center gap-2">
+                      Location
+                      {extractedData.location && (
+                        <span className="text-xs text-primary font-normal flex items-center gap-1">
+                          <Sparkles className="h-3 w-3" />
+                          Auto-filled
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      id="location"
+                      value={formData.location}
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                      placeholder="San Francisco, CA"
+                      className={extractedData.location ? "bg-primary/5 border-primary/20" : ""}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="job_type" className="flex items-center gap-2">
+                      Job Type
+                      {extractedData.job_type && (
+                        <span className="text-xs text-primary font-normal flex items-center gap-1">
+                          <Sparkles className="h-3 w-3" />
+                          Auto-filled
+                        </span>
+                      )}
+                    </Label>
+                    <Select
+                      value={formData.job_type}
+                      onValueChange={(value) => setFormData({ ...formData, job_type: value })}
+                    >
+                      <SelectTrigger
+                        id="job_type"
+                        className={extractedData.job_type ? "bg-primary/5 border-primary/20" : ""}
+                      >
+                        <SelectValue placeholder="Select job type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="In-Office">In-Office</SelectItem>
+                        <SelectItem value="Remote">Remote</SelectItem>
+                        <SelectItem value="Hybrid">Hybrid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
                     <Label htmlFor="date_applied" className="flex items-center gap-2">
                       Date Applied
                       {extractedData.job_title && (
@@ -320,7 +373,6 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
                   </div>
                 </div>
 
-                {/* Right Column: User Input Fields */}
                 <div className="space-y-4">
                   <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
                     Your Information
@@ -400,7 +452,6 @@ export function AddJobDialog({ open, onOpenChange, onAdd }: AddJobDialogProps) {
                 </div>
               </div>
 
-              {/* Job Description Snippet - Full Width */}
               {extractedData.description && (
                 <div className="space-y-2">
                   <Label className="text-xs text-muted-foreground flex items-center gap-1">
