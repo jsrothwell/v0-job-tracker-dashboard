@@ -188,14 +188,18 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
 
   if (!editedJob) return null
 
+  // 1. Update DialogContent: Add !p-0 and keep max-h, flex, flex-col
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-hidden flex flex-col">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-hidden flex flex-col !p-0">
+
+        {/* 2. Update DialogHeader: Add padding */}
+        <DialogHeader className="p-6">
           <DialogTitle className="text-2xl">Edit Job Details</DialogTitle>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 pr-4">
+        {/* 3. Update ScrollArea: Add horizontal padding */}
+              <ScrollArea className="flex-1 px-6">
           <div className="space-y-6 pb-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column: Core Details */}
@@ -473,7 +477,8 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
           </div>
         </ScrollArea>
 
-        <DialogFooter className="border-t pt-4">
+        {/* 4. Update DialogFooter: Add padding */}
+              <DialogFooter className="border-t pt-4 p-6">
           <div className="flex justify-between w-full">
             <Button variant="destructive" onClick={handleDelete} size="sm">
               <Trash2 className="h-4 w-4 mr-2" />
