@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/components/ui/use-toast"
 import {
   DollarSign,
@@ -212,6 +213,8 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
           expected_salary: editedJob.expected_salary || null,
           contact_name: editedJob.contact_name || null,
           status: editedJob.status,
+          has_resume: editedJob.has_resume || false,
+          has_cover_letter: editedJob.has_cover_letter || false,
         })
         .eq("id", editedJob.id)
 
@@ -414,22 +417,40 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
                   </Select>
                 </div>
 
-                {/* Documents Display */}
-                {(editedJob.has_resume || editedJob.has_cover_letter) && (
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/5 border border-primary/20">
-                    <FileText className="h-5 w-5 text-primary" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Documents Uploaded</p>
-                      <p className="text-xs text-muted-foreground">
-                        {editedJob.has_resume && editedJob.has_cover_letter
-                          ? "Resume & Cover Letter"
-                          : editedJob.has_resume
-                            ? "Resume"
-                            : "Cover Letter"}
-                      </p>
-                    </div>
+                {/* Documents Section */}
+                <div className="space-y-3">
+                  <Label>Documents</Label>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="edit_has_resume"
+                      checked={editedJob.has_resume || false}
+                      onCheckedChange={(checked) =>
+                        setEditedJob({ ...editedJob, has_resume: checked as boolean })
+                      }
+                    />
+                    <label
+                      htmlFor="edit_has_resume"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      Resume uploaded
+                    </label>
                   </div>
-                )}
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="edit_has_cover_letter"
+                      checked={editedJob.has_cover_letter || false}
+                      onCheckedChange={(checked) =>
+                        setEditedJob({ ...editedJob, has_cover_letter: checked as boolean })
+                      }
+                    />
+                    <label
+                      htmlFor="edit_has_cover_letter"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      Cover letter uploaded
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
