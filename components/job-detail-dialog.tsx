@@ -591,7 +591,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
             variant="destructive"
             onClick={handleDelete}
             size="sm"
-            className="mr-auto"
+            className="mr-auto text-white"
           >
             <Trash2 className="h-4 w-4 mr-2" />
             Delete Job
