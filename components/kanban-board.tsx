@@ -124,6 +124,12 @@ export function KanbanBoard({ initialJobs, userId, onJobsChange }: KanbanBoardPr
     }
   }
 
+  const handleUpdateJob = (updatedJob: Job) => {
+    console.log("[v0] Updating job:", updatedJob)
+    setJobs((prev) => prev.map((j) => (j.id === updatedJob.id ? updatedJob : j)))
+    onJobsChange?.()
+  }
+
   const handleDeleteJob = async (jobId: string) => {
     const { error } = await supabase.from("jobs").delete().eq("id", jobId).eq("user_id", userId)
 
@@ -184,7 +190,13 @@ export function KanbanBoard({ initialJobs, userId, onJobsChange }: KanbanBoardPr
 
       <AddJobDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} onAdd={handleAddJob} />
 
-      <JobDetailDialog job={selectedJob} open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen} />
+      <JobDetailDialog
+        job={selectedJob}
+        open={isDetailDialogOpen}
+        onOpenChange={setIsDetailDialogOpen}
+        onUpdate={handleUpdateJob}
+        onDelete={handleDeleteJob}
+      />
 
       <CelebrationToast
         show={showCelebration}
