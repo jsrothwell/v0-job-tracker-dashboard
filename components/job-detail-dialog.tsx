@@ -27,6 +27,8 @@ import {
   Save,
   Plus,
   AlertCircle,
+  Search,
+  Mail,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
@@ -42,6 +44,10 @@ interface Job {
   status: string
   has_resume?: boolean
   has_cover_letter?: boolean
+  hiring_manager_name?: string | null
+  hiring_manager_email?: string | null
+  hiring_manager_linkedin?: string | null
+  hiring_manager_notes?: string | null
 }
 
 interface CompanyInsights {
@@ -164,8 +170,28 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
     window.open(`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(searchQuery)}`, "_blank")
   }
 
+  // New: Research helper functions for hiring manager
+  const handleFindHiringManager = () => {
+    if (!editedJob) return
+    const jobTitle = editedJob.job_title.toLowerCase().includes('engineer') ? 'engineering manager' : 'hiring manager'
+    const searchQuery = `${editedJob.company_name} ${jobTitle} ${editedJob.job_title}`
+    window.open(`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(searchQuery)}`, "_blank")
+  }
+
+  const handleFindRecruiter = () => {
+    if (!editedJob) return
+    const searchQuery = `${editedJob.company_name} recruiter OR "talent acquisition"`
+    window.open(`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(searchQuery)}`, "_blank")
+  }
+
+  const handleGoogleSearch = () => {
+    if (!editedJob) return
+    const searchQuery = `"${editedJob.company_name}" "${editedJob.job_title}" hiring manager`
+    window.open(`https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`, "_blank")
+  }
+
   const handleSave = async () => {
-    console.log("Save button clicked") // Debug log
+    console.log("Save button clicked")
 
     if (!editedJob) {
       console.error("No edited job data")
@@ -199,7 +225,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
 
     setIsSaving(true)
     try {
-      console.log("Attempting to save job:", editedJob) // Debug log
+      console.log("Attempting to save job:", editedJob)
 
       const supabase = createClient()
       const { error } = await supabase
@@ -215,6 +241,10 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
           status: editedJob.status,
           has_resume: editedJob.has_resume || false,
           has_cover_letter: editedJob.has_cover_letter || false,
+          hiring_manager_name: editedJob.hiring_manager_name || null,
+          hiring_manager_email: editedJob.hiring_manager_email || null,
+          hiring_manager_linkedin: editedJob.hiring_manager_linkedin || null,
+          hiring_manager_notes: editedJob.hiring_manager_notes || null,
         })
         .eq("id", editedJob.id)
 
@@ -223,7 +253,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
         throw error
       }
 
-      console.log("Save successful") // Debug log
+      console.log("Save successful")
 
       toast({
         title: "Success",
@@ -450,6 +480,106 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
                       Cover letter uploaded
                     </label>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <Separator className="my-6" />
+
+            {/* New: Hiring Manager Research Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                  Hiring Manager / Recruiter
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleFindHiringManager}
+                    className="hover:bg-[#0A66C2]/10"
+                  >
+                    <Search className="h-3 w-3 mr-1" />
+                    Find Manager
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleFindRecruiter}
+                    className="hover:bg-[#0A66C2]/10"
+                  >
+                    <Search className="h-3 w-3 mr-1" />
+                    Find Recruiter
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleGoogleSearch}
+                    className="hover:bg-blue-50"
+                  >
+                    <ExternalLink className="h-3 w-3 mr-1" />
+                    Google
+                  </Button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="hiring_manager_name">Name</Label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="hiring_manager_name"
+                      value={editedJob.hiring_manager_name || ""}
+                      onChange={(e) => setEditedJob({ ...editedJob, hiring_manager_name: e.target.value })}
+                      placeholder="John Doe"
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="hiring_manager_email">Email</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="hiring_manager_email"
+                      type="email"
+                      value={editedJob.hiring_manager_email || ""}
+                      onChange={(e) => setEditedJob({ ...editedJob, hiring_manager_email: e.target.value })}
+                      placeholder="john.doe@company.com"
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="hiring_manager_linkedin">LinkedIn Profile URL</Label>
+                  <div className="relative">
+                    <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="hiring_manager_linkedin"
+                      type="url"
+                      value={editedJob.hiring_manager_linkedin || ""}
+                      onChange={(e) => setEditedJob({ ...editedJob, hiring_manager_linkedin: e.target.value })}
+                      placeholder="https://linkedin.com/in/johndoe"
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="hiring_manager_notes">Notes</Label>
+                  <Textarea
+                    id="hiring_manager_notes"
+                    value={editedJob.hiring_manager_notes || ""}
+                    onChange={(e) => setEditedJob({ ...editedJob, hiring_manager_notes: e.target.value })}
+                    placeholder="Add any notes about your interactions, mutual connections, or research findings..."
+                    rows={3}
+                  />
                 </div>
               </div>
             </div>

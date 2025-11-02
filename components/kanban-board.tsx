@@ -26,14 +26,21 @@ interface Job {
   user_id: string
   job_title: string
   company_name: string
+  location?: string | null
+  job_type?: string | null
   date_applied: string | null
   expected_salary: string | null
   contact_name: string | null
-  status: JobStatus
+  status: JobStatus // or string for job-detail-dialog
   created_at: string
   updated_at: string
   has_resume?: boolean
   has_cover_letter?: boolean
+  // New hiring manager fields
+  hiring_manager_name?: string | null
+  hiring_manager_email?: string | null
+  hiring_manager_linkedin?: string | null
+  hiring_manager_notes?: string | null
 }
 
 interface KanbanBoardProps {
