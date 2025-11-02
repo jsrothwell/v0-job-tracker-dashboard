@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { useToast } from "@/components/ui/use-toast"
 import {
   DollarSign,
   User,
@@ -24,6 +25,7 @@ import {
   Trash2,
   Save,
   Plus,
+  AlertCircle,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
@@ -63,6 +65,7 @@ interface JobDetailDialogProps {
 }
 
 export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }: JobDetailDialogProps) {
+  const { toast } = useToast()
   const [editedJob, setEditedJob] = useState<Job | null>(null)
   const [companyInsights, setCompanyInsights] = useState<CompanyInsights>({})
   const [isLoadingInsights, setIsLoadingInsights] = useState(false)
@@ -104,7 +107,15 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
     const supabase = createClient()
     const { data: userData } = await supabase.auth.getUser()
 
-    if (!userData.user) return
+    if (!userData.user) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to add notes",
+        variant: "destructive",
+      })
+      setIsAddingNote(false)
+      return
+    }
 
     const { error } = await supabase.from("job_notes").insert({
       job_id: job.id,
@@ -115,6 +126,16 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
     if (!error) {
       setNewNote("")
       await fetchNotes(job.id)
+      toast({
+        title: "Note added",
+        description: "Your note has been saved successfully",
+      })
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to add note. Please try again.",
+        variant: "destructive",
+      })
     }
     setIsAddingNote(false)
   }
@@ -143,31 +164,78 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
   }
 
   const handleSave = async () => {
-    if (!editedJob || !onUpdate) return
+    console.log("Save button clicked") // Debug log
+
+    if (!editedJob) {
+      console.error("No edited job data")
+      toast({
+        title: "Error",
+        description: "No job data to save",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (!onUpdate) {
+      console.error("No onUpdate callback provided")
+      toast({
+        title: "Error",
+        description: "Update function not available",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // Validate required fields
+    if (!editedJob.job_title || !editedJob.company_name) {
+      toast({
+        title: "Validation Error",
+        description: "Job title and company name are required",
+        variant: "destructive",
+      })
+      return
+    }
 
     setIsSaving(true)
     try {
+      console.log("Attempting to save job:", editedJob) // Debug log
+
       const supabase = createClient()
       const { error } = await supabase
         .from("jobs")
         .update({
           job_title: editedJob.job_title,
           company_name: editedJob.company_name,
-          location: editedJob.location,
-          job_type: editedJob.job_type,
-          date_applied: editedJob.date_applied,
-          expected_salary: editedJob.expected_salary,
-          contact_name: editedJob.contact_name,
+          location: editedJob.location || null,
+          job_type: editedJob.job_type || null,
+          date_applied: editedJob.date_applied || null,
+          expected_salary: editedJob.expected_salary || null,
+          contact_name: editedJob.contact_name || null,
           status: editedJob.status,
         })
         .eq("id", editedJob.id)
 
-      if (!error) {
-        onUpdate(editedJob)
-        onOpenChange(false)
+      if (error) {
+        console.error("Supabase error:", error)
+        throw error
       }
+
+      console.log("Save successful") // Debug log
+
+      toast({
+        title: "Success",
+        description: "Job details updated successfully",
+      })
+
+      onUpdate(editedJob)
+      onOpenChange(false)
     } catch (error) {
       console.error("Failed to update job:", error)
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to save changes. Please try again.",
+        variant: "destructive",
+      })
     } finally {
       setIsSaving(false)
     }
@@ -177,29 +245,39 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
     if (!editedJob || !onDelete) return
     if (!confirm("Are you sure you want to delete this job application?")) return
 
-    const supabase = createClient()
-    const { error } = await supabase.from("jobs").delete().eq("id", editedJob.id)
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.from("jobs").delete().eq("id", editedJob.id)
 
-    if (!error) {
+      if (error) throw error
+
+      toast({
+        title: "Success",
+        description: "Job application deleted",
+      })
+
       onDelete(editedJob.id)
       onOpenChange(false)
+    } catch (error) {
+      console.error("Failed to delete job:", error)
+      toast({
+        title: "Error",
+        description: "Failed to delete job. Please try again.",
+        variant: "destructive",
+      })
     }
   }
 
   if (!editedJob) return null
 
-  // 1. Update DialogContent: Add !p-0 and keep max-h, flex, flex-col
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-hidden flex flex-col !p-0">
-
-        {/* 2. Update DialogHeader: Add padding */}
-        <DialogHeader className="p-6">
+      <DialogContent className="sm:max-w-[900px] max-h-[90vh] flex flex-col p-0">
+        <DialogHeader className="px-6 pt-6 pb-4">
           <DialogTitle className="text-2xl">Edit Job Details</DialogTitle>
         </DialogHeader>
 
-        {/* 3. Update ScrollArea: Add horizontal padding */}
-              <ScrollArea className="flex-1 h-0 px-6">
+        <ScrollArea className="flex-1 px-6">
           <div className="space-y-6 pb-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column: Core Details */}
@@ -214,6 +292,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
                     id="edit_job_title"
                     value={editedJob.job_title}
                     onChange={(e) => setEditedJob({ ...editedJob, job_title: e.target.value })}
+                    required
                   />
                 </div>
 
@@ -223,6 +302,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
                     id="edit_company_name"
                     value={editedJob.company_name}
                     onChange={(e) => setEditedJob({ ...editedJob, company_name: e.target.value })}
+                    required
                   />
                 </div>
 
@@ -306,7 +386,7 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
                       variant="outline"
                       size="icon"
                       onClick={handleLinkedInSearch}
-                      className="hover:bg-[#0A66C2]/10 hover:text-[#0A66C2] hover:border-[#0A66C2] bg-transparent"
+                      className="hover:bg-[#0A66C2]/10 hover:text-[#0A66C2] hover:border-[#0A66C2]"
                       title="Find on LinkedIn"
                     >
                       <Linkedin className="h-4 w-4" />
@@ -355,22 +435,34 @@ export function JobDetailDialog({ job, open, onOpenChange, onUpdate, onDelete }:
           </div>
         </ScrollArea>
 
-        {/* 4. Update DialogFooter: Add padding */}
-              <DialogFooter className="border-t pt-4 p-6">
-          <div className="flex justify-between w-full">
-            <Button variant="destructive" onClick={handleDelete} size="sm">
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete Job
+        <DialogFooter className="flex-row justify-between items-center border-t px-6 py-4 gap-2">
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={handleDelete}
+            size="sm"
+            className="mr-auto"
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Delete Job
+          </Button>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
+              Cancel
             </Button>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleSave} disabled={isSaving} className="bg-primary hover:bg-primary/90">
-                <Save className="h-4 w-4 mr-2" />
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
-            </div>
+            <Button
+              type="button"
+              onClick={handleSave}
+              disabled={isSaving || !editedJob.job_title || !editedJob.company_name}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Save className="h-4 w-4 mr-2" />
+              {isSaving ? "Saving..." : "Save Changes"}
+            </Button>
           </div>
         </DialogFooter>
       </DialogContent>
